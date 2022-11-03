@@ -23,6 +23,7 @@
     <link href="{% static 'css/bootstrap-theme.css' %}" rel="stylesheet" />
     <link href="{% static 'css/bootstrap-datepicker.css' %}" rel="stylesheet" />
     <link href="{% static 'css/bootstrap-slider.css' %}" rel="stylesheet" />
+
     <!-- Bootstrap Link End-->
     <!-- Iconmoon Link Start-->
     <link href="{% static 'css/iconmoon.css' %}" rel="stylesheet" />
@@ -43,7 +44,7 @@
     <link href="{% static 'css/prettyPhoto.css' %}" rel="stylesheet" />
     <!-- Pretty Photo Link End-->
     <!-- Themes / plugin Link Start-->
-    <link href="style.css" rel="stylesheet" />
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
     <link href="{% static 'css/cs-foodbakery-plugin.css' %}" rel="stylesheet" />
     <link href="{% static 'css/color.css' %}" rel="stylesheet" />
     <link href="{% static 'css/widget.css' %}" rel="stylesheet" />
@@ -74,7 +75,7 @@
                   <figure>
                     <a href="index.html" class="light-logo">
                       <img
-                        src="assets/extra-images/main-logo.png"
+                        src="{% static 'extra-images/main-logo.png' %}"
                         alt="FoodBakery"
                       />
                     </a>
