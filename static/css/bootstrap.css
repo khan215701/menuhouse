@@ -5140,10 +5140,11 @@ a.thumbnail.active {
   color: #333333;
 }
 .alert {
-  padding: 15px;
-  margin-bottom: 20px;
+  position: relative;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
   border: 1px solid transparent;
-  border-radius: 4px;
+  border-radius: 0.25rem;
 }
 .alert h4 {
   margin-top: 0;
@@ -5171,9 +5172,9 @@ a.thumbnail.active {
   color: inherit;
 }
 .alert-success {
-  background-color: #dff0d8;
-  border-color: #d6e9c6;
-  color: #3c763d;
+  color: #155724;
+  background-color: #155724;
+  border-color: #c3e6cb;
 }
 .alert-success hr {
   border-top-color: #c9e2b3;
