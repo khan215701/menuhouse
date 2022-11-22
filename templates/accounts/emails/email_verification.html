@@ -1,0 +1,6 @@
+{% autoescape off %}
+<h4>
+  hi {{user.first_name}}, please click on below link to confirm your
+  registration.
+</h4>
+http://{{domain}}{% url 'activate' uidb64=uid token=token %} {% endautoescape %}

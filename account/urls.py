@@ -1,13 +1,18 @@
 from django.urls import path
-from .views import registerUser, registerVendor, login, logout, myAccount, vendorDashboard, customerDashboard
+from . import views 
 
 urlpatterns = [
-    path('registerUser/', registerUser, name='registerUser'),
-    path('registerVendor/', registerVendor, name='registerVendor'),
+    path('registerUser/', views.registerUser, name='registerUser'),
+    path('registerVendor/', views.registerVendor, name='registerVendor'),
     
-    path('login/', login, name='login'),
-    path('logout/', logout, name='logout'),
-    path('myAccount/', myAccount, name='myAccount'),
-    path('vendorDashboard/', vendorDashboard, name='vendorDashboard'),
-    path('customerDashboard/', customerDashboard, name='customerDashboard'),
+    path('login/', views.login, name='login'),
+    path('logout/', views.logout, name='logout'),
+    path('myAccount/', views.myAccount, name='myAccount'),
+    path('activate/<uidb64>/<token>/', views.activate, name='activate'),
+    path('vendorDashboard/', views.vendorDashboard, name='vendorDashboard'),
+    path('customerDashboard/', views.customerDashboard, name='customerDashboard'),
+    
+    path('forgot_password/', views.forgotPassword, name='forgotPassword'),
+    path('reset_password/<uidb64>/<token>', views.resetPasswordValidate, name='resetPassword'),
+    path('reset_password/', views.resetPassword, name='resetPassword'),
 ]
