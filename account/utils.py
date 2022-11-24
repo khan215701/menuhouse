@@ -32,3 +32,12 @@ def send_email(request,user, subject, template):
     mail = EmailMessage(mail_subject, message, from_email, to=[to_email])
     mail.send()
     
+    
+def send_notification(mail_subject, template, context):
+    from_email = DEFAULT_FROM_EMAIL
+    message = render_to_string(template, context)
+    to_email = context['user'].email
+    mail = EmailMessage(mail_subject, message, from_email, to=[to_email])
+    mail.send()
+
+    
