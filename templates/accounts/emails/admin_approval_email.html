@@ -1,0 +1,8 @@
+{% autoescape off %}
+{{ user.first_name }},
+{% if is_approved %}
+    Congratulations! Your restaurant has been approved by our admin team. --MenuHouse
+{% else %}
+    we're sorry! you are not eligible for publishing your food menu on our marketplace. For more details, please contact supper@menuhouse.com
+{% endif %}
+{% endautoescape %}

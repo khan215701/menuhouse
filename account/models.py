@@ -105,5 +105,8 @@ class profile(models.Model):
     
   def __str__(self):
     return self.user.email
+  
+  def address(self):
+    return f'{self.address_line_1}, {self.address_line_2}'
     
 
