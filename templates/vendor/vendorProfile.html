@@ -20,7 +20,7 @@
                         <div class="user-holder">
                             <h5 class="text-uppercase">Manage Your Restaurant</h5>
 									<!-- My Restaurants Form Start -->
-									<form action="{% url 'vendorprofile' %}" method="POST" enctype="multipart/form-data">
+									<form action="{% url 'vendorProfile' %}" method="POST" enctype="multipart/form-data">
                                         {% csrf_token %}
 										<div class="form-fields-set">
 											<ul>
@@ -33,8 +33,8 @@
 																		<li class="gal-img">
 																			<div class="drag-list">
 																				<div class="item-thumb">
-																					{% if profile.profile_picture %}
-																					<img class="thumbnail" src="{{profile.profile_picture.url}}" alt="Profile Picture">
+																					{% if user_profile.profile_picture %}
+																					<img class="thumbnail" src="{{user_profile.profile_picture.url}}" alt="Profile Picture">
 																					{% else %}
 																					<img class="thumbnail" src="{% static 'images/default-profile.png' %}" alt="Profile Picture">
 																					{% endif %}
@@ -59,8 +59,8 @@
 																		<li class="gal-img">
 																			<div class="drag-list">
 																				<div class="item-thumb">
-																					{% if profile.cover_photo %}
-																					<img class="thumbnail" src="{{profile.cover_photo.url}}" alt="Cover Photo">
+																					{% if user_profile.cover_photo %}
+																					<img class="thumbnail" src="{{user_profile.cover_photo.url}}" alt="Cover Photo">
 																					{% else %}
 																					<img class="thumbnail" src="{% static 'images/default-cover.png' %}" alt="Cover Photo">
 																					{% endif %}
