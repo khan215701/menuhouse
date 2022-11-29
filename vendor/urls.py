@@ -4,5 +4,5 @@ from . import views
 
 urlpatterns = [
     path('', AccountView.vendorDashboard, name='vendor'),
-    path('profile/', views.vendorProfile, name='vendorprofile'),
+    path('profile/', views.vendorProfile, name='vendorProfile'),
 ]
