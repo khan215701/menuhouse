@@ -10,12 +10,14 @@ class Category(models.Model):
     description = models.TextField(max_length=100, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
-    
-    class Meta:
+         
+    class Meta: 
         verbose_name =  'category'
         verbose_name_plural = 'categories'
-        
+    
+    def clean(self):
+        self.category_name = self.category_name.capitalize()
+            
     def __str__(self):
         return self.category_name
     
