@@ -5,7 +5,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from account.form import profileForm
 from .form import VendorForm
-from menu.form import categoryForm
+from menu.form import categoryForm, foodForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from account.views import check_role_vendor
 from django.template.defaultfilters import slugify
@@ -21,7 +21,7 @@ def get_vendor(request):
 @user_passes_test(check_role_vendor)
 def vendorProfile(request):
     user_profile = get_object_or_404(profile, user=request.user)
-    vendor = get_object_or_404(Vendor)
+    vendor = get_object_or_404(Vendor, user=request.user)
     
     if request.method == 'POST':
         profile_form = profileForm(request.POST, request.FILES, instance=user_profile)
@@ -61,7 +61,7 @@ def menuBuilder(request):
 @user_passes_test(check_role_vendor)
 def fooditemsByCategory(request, pk=None):
     vendor = get_vendor(request)
-    category = get_object_or_404(Category, pk=pk)
+    category = get_object_or_404(Category, vendor=vendor, pk=pk)
     foodItem = FoodItem.objects.filter(vendor=vendor, category=category)
     context = {
         'category': category,
@@ -71,7 +71,8 @@ def fooditemsByCategory(request, pk=None):
 
 
 # CRUD method views
-
+@login_required(login_url='login')
+@user_passes_test(check_role_vendor)
 def categoryAdd(request):
     if request.method == 'POST':
         category_form = categoryForm(request.POST)
@@ -92,7 +93,8 @@ def categoryAdd(request):
     }
     return render(request, 'vendor/categoryAdd.html', context)
 
-
+@login_required(login_url='login')
+@user_passes_test(check_role_vendor)
 def categoryEdit(request, pk=None):
     category = get_object_or_404(Category, pk=pk)
     if request.method == 'POST':
@@ -115,9 +117,65 @@ def categoryEdit(request, pk=None):
     }
     return render(request, 'vendor/categoryEdit.html', context)
 
-
+@login_required(login_url='login')
+@user_passes_test(check_role_vendor)
 def categoryDelete(request, pk=None):
     category = get_object_or_404(Category, pk=pk)
     category.delete()
     messages.success(request, 'category Updated successfully')
+    return redirect('menuBuilder')
+
+
+# FOOD CRUD METHODS
+@login_required(login_url='login')
+@user_passes_test(check_role_vendor)
+def foodAdd(request):
+    if request.method == 'POST':
+        form = foodForm(request.POST, request.FILES)
+        if form.is_valid():
+            food_title = form.cleaned_data['food_title']
+            food = form.save(commit=False)
+            food.vendor = get_vendor(request)
+            food.slug = slugify(food_title)
+            form.save()
+            messages.success(request, 'food Added successfully')
+            return redirect('fooditemsByCategory', food.category.id)
+        else:
+            print(form.errors)
+    else:
+        form = foodForm()
+        form.fields['category'].queryset = Category.objects.filter(vendor=get_vendor(request))
+    context = {
+        'form': form,
+    }
+    return render(request, 'vendor/foodAdd.html', context)
+
+@login_required(login_url='login')
+@user_passes_test(check_role_vendor)
+def foodEdit(request, pk=None):
+    food = get_object_or_404(FoodItem, pk=pk)
+    if request.method == 'POST':
+        form = foodForm(request.POST, request.FILES, instance=food)
+        if form.is_valid():
+           food_title = form.cleaned_data['food_title']
+           food = form.save(commit=False)
+           food.vendor = get_vendor(request)
+           food.slug = slugify(food_title)
+           form.save()
+           messages.success(request, 'Food Item Saved Successfully')
+           return redirect('menuBuilder')
+        else:
+            print(form.errors)
+    else:   
+        form = foodForm(instance=food)
+    context = {
+        'form': form,
+        'food': food,
+    }
+    return render(request, 'vendor/foodEdit.html',context)
+
+def foodDelete(request, pk=None):
+    food = get_object_or_404(FoodItem, pk=pk)
+    food.delete()
+    messages.success(request, 'food deleted successfully')
     return redirect('menuBuilder')
