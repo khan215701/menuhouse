@@ -8,8 +8,13 @@ urlpatterns = [
     path('menu-builders/', views.menuBuilder, name='menuBuilder'),
     path('menu-builder/category/<int:pk>', views.fooditemsByCategory, name='fooditems_by_category'),
     
-    #CRUD methods
+    #category CRUD methods
     path('menu-builder/category/add', views.categoryAdd, name='add_category'),
     path('menu-builder/category/edit/<int:pk>', views.categoryEdit, name='edit_category'),
     path('menu-builder/category/delete/<int:pk>', views.categoryDelete, name='delete_category'),
+    
+    #food items CRUD methods
+    path('menu-builder/food/add', views.foodAdd, name='add_food'),
+    path('menu-builder/food/edit/<int:pk>', views.foodEdit, name='edit_food'),
+    path('menu-builder/food/delete/<int:pk>', views.foodDelete, name='delete_food'),
 ]
