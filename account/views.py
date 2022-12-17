@@ -9,6 +9,7 @@ from account.utils import detectUser, send_email
 from django.core.exceptions import PermissionDenied
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth.tokens import default_token_generator
+from django.template.defaultfilters import slugify
 
 # permission denied for customer
 def check_role_vendor(user):
@@ -76,6 +77,7 @@ def registerVendor(request):
         vendor_form = VendorForm(request.POST, request.FILES)
         if form.is_valid() and vendor_form.is_valid:
             password = form.cleaned_data['password'].strip()
+            vendor_name = vendor_form.cleaned_data['vendor_name'].strip()
             user = form.save(commit=False)
             user.set_password(password)
             user.role = User.VENDOR
@@ -84,6 +86,7 @@ def registerVendor(request):
             vendor.user = user
             profile_user = profile.objects.get(user=user)
             vendor.user_profile = profile_user
+            vendor.vendor_slug = slugify(vendor_name)+'-'+str(user.id)
             vendor.save()
             subject = 'please confirm your verification link to activate your account'
             template = 'accounts/emails/email_verification.html'
