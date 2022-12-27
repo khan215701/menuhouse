@@ -57,3 +57,26 @@ def add_to_cart(request, food_id):
         return JsonResponse({'status':'failed', 'message':'please login to add to cart'})
     
     
+
+def reduce_to_cart(request, food_id):
+   if request.user.is_authenticated:
+       if request.is_ajax():
+            try:
+                fooditem = FoodItem.objects.get(id=food_id)
+                try:
+                    check_cart = Cart.objects.get(user=request.user, foodItem=fooditem)
+                    if check_cart.quantity > 1:
+                        check_cart.quantity -= 1
+                        check_cart.save()
+                    else:
+                        check_cart.delete()
+                        check_cart.quantity = 0
+                    return JsonResponse({'status':'success', 'cart_counter':get_cart_counter(request), 'qty':check_cart.quantity})
+                except:
+                    return JsonResponse({'status':'success', 'message':'you do not have this food in cart'})
+            except:
+                return JsonResponse({'status':'failed', 'message':'food does not avaliable'})
+       else:
+           return JsonResponse({'status':'failed', 'message':'invalid request'})
+   else:
+        return JsonResponse({'status':'failed', 'message':'please login to add to cart'})

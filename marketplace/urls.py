@@ -6,4 +6,5 @@ urlpatterns = [
     
     # carts url
     path('add_to_cart/<int:food_id>', views.add_to_cart, name='add_to_cart'),
+    path('reduce_to_cart/<int:food_id>', views.reduce_to_cart, name='reduce_to_cart'),
 ]
