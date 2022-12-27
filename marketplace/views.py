@@ -73,10 +73,10 @@ def reduce_to_cart(request, food_id):
                         check_cart.quantity = 0
                     return JsonResponse({'status':'success', 'cart_counter':get_cart_counter(request), 'qty':check_cart.quantity})
                 except:
-                    return JsonResponse({'status':'success', 'message':'you do not have this food in cart'})
+                    return JsonResponse({'status':'Failed', 'message':'you do not have this food in cart'})
             except:
-                return JsonResponse({'status':'failed', 'message':'food does not avaliable'})
+                return JsonResponse({'status':'Failed', 'message':'food does not avaliable'})
        else:
-           return JsonResponse({'status':'failed', 'message':'invalid request'})
+           return JsonResponse({'status':'Failed', 'message':'invalid request'})
    else:
-        return JsonResponse({'status':'failed', 'message':'please login to add to cart'})
+        return JsonResponse({'status':'login_required ', 'message':'please login to add to cart'})
