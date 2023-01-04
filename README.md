@@ -1,4 +1,4 @@
-project Name : MenuHouse
+Project Name : MenuHouse
 language : Python, javaScript, html, css
-repository url : https://github.com/khan215701/menuhouse.git
-thirth party api : google and paypal
+Repository url : https://github.com/khan215701/menuhouse.git
+Api : google and paypal
