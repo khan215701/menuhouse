@@ -70,6 +70,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'account.context_processor.get_vendor',
+                'account.context_processor.get_google_api',
                 'marketplace.context_processor.get_cart_counter',
                 'marketplace.context_processor.get_cart_amount',
             ],
@@ -159,3 +160,5 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
+
+GOOGLE_API_KEY = "AIzaSyC4yTudrg9pTcB2khAgrbCMBfVvbviOhVU";
