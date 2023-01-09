@@ -7,6 +7,7 @@ from django.db.models import Prefetch
 from marketplace.models import Cart
 from .context_processor import get_cart_counter, get_cart_amount
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 # Create your views here.
 
 def marketplace(request):
@@ -108,4 +109,16 @@ def delete_cart(request, cart_id):
     
 
 def search(request):
-    return HttpResponse('Search site')
+    keyword = request.GET['keyword']
+    address = request.GET['address']
+    lat = request.GET['lat']
+    lng = request.GET['lng']
+    
+    vendor_by_fooditem = FoodItem.objects.filter(food_title__icontains=keyword, is_available=True).values_list('vendor')    
+    vendors = Vendor.objects.filter(Q(id__in=vendor_by_fooditem) |Q(vendor_name__icontains=keyword, is_approved=True, user__is_active=True))
+    vendor_count = vendors.count()
+    context = {
+        'vendors' : vendors,
+        'vendor_count' : vendor_count
+    }
+    return render(request, 'marketplace/listings.html', context)

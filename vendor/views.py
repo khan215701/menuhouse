@@ -80,8 +80,9 @@ def categoryAdd(request):
             category_name = category_form.cleaned_data['category_name']
             category = category_form.save(commit=False)
             category.vendor = get_vendor(request)
-            category.slug = slugify(category_name)
-            category_form.save()
+            category.save()
+            category.slug = slugify(category_name) + '-' + str(category.id)
+            category.save()
             messages.success(request, 'category added successfully')
             return redirect('menuBuilder')
         else:
@@ -137,9 +138,9 @@ def foodAdd(request):
             food = form.save(commit=False)
             food.vendor = get_vendor(request)
             food.slug = slugify(food_title)
-            form.save()
+            food.save()
             messages.success(request, 'food Added successfully')
-            return redirect('fooditemsByCategory', food.category.id)
+            return redirect('fooditemsByCategory', args={'pk':food.category.id})
         else:
             print(form.errors)
     else:
