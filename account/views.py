@@ -76,17 +76,20 @@ def registerVendor(request):
         form = UserForm(request.POST)
         vendor_form = VendorForm(request.POST, request.FILES)
         if form.is_valid() and vendor_form.is_valid:
-            password = form.cleaned_data['password'].strip()
-            vendor_name = vendor_form.cleaned_data['vendor_name'].strip()
-            user = form.save(commit=False)
-            user.set_password(password)
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            user = User.objects.create_user(first_name=first_name, last_name=last_name, username=username, email=email, password=password)
             user.role = User.VENDOR
             user.save()
             vendor = vendor_form.save(commit=False)
             vendor.user = user
-            profile_user = profile.objects.get(user=user)
-            vendor.user_profile = profile_user
+            vendor_name = vendor_form.cleaned_data['vendor_name']
             vendor.vendor_slug = slugify(vendor_name)+'-'+str(user.id)
+            user_profile = profile.objects.get(user=user)
+            vendor.user_profile = user_profile
             vendor.save()
             subject = 'please confirm your verification link to activate your account'
             template = 'accounts/emails/email_verification.html'
