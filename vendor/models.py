@@ -64,3 +64,6 @@ class OpeningHour(models.Model):
     class Meta:
         ordering = ('day', 'from_hour')
         unique_together = ('day', 'from_hour', 'to_hour')
+        
+    def __unicode__(self):
+        self.get_day_display()
