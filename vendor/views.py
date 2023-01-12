@@ -180,3 +180,7 @@ def foodDelete(request, pk=None):
     food.delete()
     messages.success(request, 'food deleted successfully')
     return redirect('menuBuilder')
+
+
+def openingHours(request):
+    return render(request, 'vendor/openingHours.html')
