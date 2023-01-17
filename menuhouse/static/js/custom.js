@@ -216,10 +216,10 @@ $('.item_qty').each(function(){
         console.log(day, from_hour, to_hour, is_closed, csrf_token, url)
 
         if(is_closed){
-            is_closed = true
+            is_closed = 'True'
             condition = "day = !''"
         }else{
-            is_closed = false
+            is_closed = 'False'
             condition = "day  != '' && from_hour != '' && to_hour != ''"
         }
 
@@ -235,7 +235,17 @@ $('.item_qty').each(function(){
                     'csrfmiddlewaretoken': csrf_token,
                 },
                 success : function(response){
-                    console.log(response)
+                    if (response.status == 'success'){
+                        if(response.is_closed == 'closed'){
+                            html = '<tr></tr><td><b>'+response.day+'</b></td><td>closed</td><td><a href="#" class="remove_hour" data-url="">Remove</a></td></tr>'
+                        }else{
+                            html = '<tr></tr><td><b>'+response.day+'</b></td><td>'+response.from_hour+'-'+response.to_hour+'</td><td><a href="#" class="remove_hour" data-url="">Remove</a></td></tr>'
+                        }
+                        $('.opening_hours').append(html)
+                        document.getElementById('opening_hours').reset()
+                    }else{
+                        swal(response.message,'', 'error')
+                    }
                 }
             })
         }else{
