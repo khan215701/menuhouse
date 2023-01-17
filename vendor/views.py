@@ -1,5 +1,5 @@
 from account.models import profile
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .models import Vendor, OpeningHour
 from menu.models import Category, FoodItem
 from django.shortcuts import render, get_object_or_404, redirect
@@ -184,13 +184,33 @@ def foodDelete(request, pk=None):
 
 
 def openingHours(request):
-    openingHours = OpeningHour.objects.filter(vendor=get_vendor(request))
+    opening_hours = OpeningHour.objects.filter(vendor=get_vendor(request))
     form = OpenHoursForm()
     context = {
-        'openingHours': openingHours,
+        'opening_hours': opening_hours,
         'form': form,
     }
     return render(request, 'vendor/openingHours.html', context)
 
 def addHours(request):
-    return HttpResponse('add timing hours')
+    if request.user.is_authenticated:
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.method == 'POST':
+            day = request.POST.get('day')
+            from_hour = request.POST.get('from_hour')
+            to_hour = request.POST.get('to_hour')
+            is_closed = request.POST.get('is_closed')
+            try:
+                hour = OpeningHour.objects.create(vendor=get_vendor(request), day=day, from_hour=from_hour, 
+                                                  to_hour=to_hour, is_closed=is_closed)
+                if hour:
+                    day = OpeningHour.objects.get(id=hour.id)
+                    if day.is_closed:
+                        return JsonResponse({'status': 'success', 'id': hour.id, 'day': day.get_day_display(), 
+                                             'is_closed': 'closed'})
+                    else:   
+                        return JsonResponse({'status': 'success', 'id': hour.id, 'day': day.get_day_display(), 
+                                             'from_hour': from_hour, 'to_hour': to_hour})
+            except Exception as e:
+                return JsonResponse({'status':'failed', 'message':e.message})
+        else:
+            HttpResponse('invalid requested')
