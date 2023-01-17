@@ -1,4 +1,5 @@
 from account.models import profile
+from django.http import HttpResponse
 from .models import Vendor, OpeningHour
 from menu.models import Category, FoodItem
 from django.shortcuts import render, get_object_or_404, redirect
@@ -190,3 +191,6 @@ def openingHours(request):
         'form': form,
     }
     return render(request, 'vendor/openingHours.html', context)
+
+def addHours(request):
+    return HttpResponse('add timing hours')

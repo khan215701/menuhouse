@@ -20,4 +20,5 @@ urlpatterns = [
     
     #opening Hours urls
     path('opening-hours', views.openingHours, name='opening_hours'),
+    path('add-opening-hours', views.addHours, name='addHours'),
 ]
