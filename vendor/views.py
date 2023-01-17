@@ -10,6 +10,7 @@ from menu.form import categoryForm, foodForm
 from django.contrib.auth.decorators import login_required, user_passes_test
 from account.views import check_role_vendor
 from django.template.defaultfilters import slugify
+from django.db import IntegrityError
 
 # Create your views here.
 
@@ -210,7 +211,7 @@ def addHours(request):
                     else:   
                         return JsonResponse({'status': 'success', 'id': hour.id, 'day': day.get_day_display(), 
                                              'from_hour': from_hour, 'to_hour': to_hour})
-            except Exception as e:
-                return JsonResponse({'status':'failed', 'message':e.message})
+            except IntegrityError as e:
+                return JsonResponse({'status':'failed', 'message':from_hour + ' - ' + to_hour +' already exists for this day'})
         else:
             HttpResponse('invalid requested')
