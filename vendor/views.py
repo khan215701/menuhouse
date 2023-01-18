@@ -215,3 +215,11 @@ def addHours(request):
                 return JsonResponse({'status':'failed', 'message':from_hour + ' - ' + to_hour +' already exists for this day'})
         else:
             HttpResponse('invalid requested')
+            
+
+def deleteHours(request, pk=None):
+    if request.user.is_authenticated:
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            hour = get_object_or_404(OpeningHour, pk=pk)
+            hour.delete()
+            return JsonResponse({'status':'success', 'id':pk})

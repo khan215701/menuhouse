@@ -236,10 +236,10 @@ $('.item_qty').each(function(){
                 },
                 success : function(response){
                     if (response.status == 'success'){
-                        if(response.is_closed == 'closed'){
-                            html = '<tr></tr><td><b>'+response.day+'</b></td><td>closed</td><td><a href="#" class="remove_hour" data-url="">Remove</a></td></tr>'
+                        if(response.is_closed == 'Closed'){
+                            html = '<tr id="hour-'+response.id+'"><td><b>'+response.day+'</b></td><td>Closed</td><td><a href="#" class="remove_hour" data-url="/vendor/opening-hours/remove/'+response.id+'/">Remove</a></td></tr>';
                         }else{
-                            html = '<tr></tr><td><b>'+response.day+'</b></td><td>'+response.from_hour+'-'+response.to_hour+'</td><td><a href="#" class="remove_hour" data-url="">Remove</a></td></tr>'
+                            html = '<tr id="hour-'+response.id+'"><td><b>'+response.day+'</b></td><td>'+response.from_hour+' - '+response.to_hour+'</td><td><a href="#" class="remove_hour" data-url="/vendor/opening-hours/remove/'+response.id+'/">Remove</a></td></tr>';
                         }
                         $('.opening_hours').append(html)
                         document.getElementById('opening_hours').reset()
@@ -251,5 +251,19 @@ $('.item_qty').each(function(){
         }else{
             swal('Please fill all field','', 'info')
         }
+    });
+
+    $(document).on('click', '.remove_hour', function(e){
+        e.preventDefault();
+        url = $(this).attr('data-url');
+        $.ajax({
+            type : 'GET',
+            url : url,
+            success : function(response){
+                if(response.status == 'success'){
+                    document.getElementById('hour-'+response.id).remove()
+                }
+            }
+        })
     })
 });
