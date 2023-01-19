@@ -18,4 +18,5 @@ urlpatterns = [
     path('reset_password/', views.resetPassword, name='resetPassword'),
     
     path('vendor/', include('vendor.urls')),
+    path('customer/', include('customers.urls')),
 ]
