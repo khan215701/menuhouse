@@ -31,7 +31,7 @@ def vendor_details(request, vendor_slug):
     if request.user.is_authenticated:
         cart_items = Cart.objects.filter(user=request.user)
     else:
-        cart_items = '0'
+        cart_items = 0
     today_date = date.today()
     today = today_date.isoweekday()
     current_opening_hours = OpeningHour.objects.filter(vendor=vendor, day=today)
@@ -48,7 +48,7 @@ def vendor_details(request, vendor_slug):
 
 def add_to_cart(request, food_id):
     if request.user.is_authenticated:
-       if request.is_ajax():
+       if   request.headers.get('x-requested-with') == 'XMLHttpRequest':
             try:
                 fooditem = FoodItem.objects.get(id=food_id)
                 try:
@@ -59,18 +59,19 @@ def add_to_cart(request, food_id):
                 except:
                     check_cart = Cart.objects.create(user=request.user, foodItem=fooditem, quantity=1)
                     return JsonResponse({'status':'success', 'message':'food is add to cart', 'cart_counter':get_cart_counter(request), 'cart_amount':get_cart_amount(request), 'qty':check_cart.quantity})
-            except:
+            except Exception as e:
+                print(e)
                 return JsonResponse({'status':'failed', 'message':'food does not avaliable'})
+            
        else:
            return JsonResponse({'status':'failed', 'message':'invalid request'})
     else:
         return JsonResponse({'status':'failed', 'message':'please login to add to cart'})
-    
-    
+            
 
 def reduce_to_cart(request, food_id):
    if request.user.is_authenticated:
-       if request.is_ajax():
+       if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             try:
                 fooditem = FoodItem.objects.get(id=food_id)
                 try:
@@ -102,7 +103,7 @@ def cart(request):
 
 def delete_cart(request, cart_id):
     if request.user.is_authenticated:
-        if request.is_ajax():
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             try:
                 cart_item = Cart.objects.get(user=request.user, id=cart_id)
                 if cart_item:
