@@ -71,6 +71,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'account.context_processor.get_vendor',
+                'account.context_processor.get_profile_cover',
                 'account.context_processor.get_google_api',
                 'marketplace.context_processor.get_cart_counter',
                 'marketplace.context_processor.get_cart_amount',
