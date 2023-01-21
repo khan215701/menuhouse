@@ -9,6 +9,7 @@ from .context_processor import get_cart_counter, get_cart_amount
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from datetime import date
+from .form import checkoutForm
 # Create your views here.
 
 def marketplace(request):
@@ -134,4 +135,8 @@ def search(request):
 
 
 def checkout(request):
-    return render(request, 'marketplace/checkout.html')
+    form = checkoutForm()
+    context = {
+        'form': form,
+    }
+    return render(request, 'marketplace/checkout.html', context)
