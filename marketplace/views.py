@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from datetime import date
 from .form import checkoutForm
+from account.models import profile
 # Create your views here.
 
 def marketplace(request):
@@ -135,11 +136,24 @@ def search(request):
 
 
 def checkout(request):
-    form = checkoutForm()
+    user_profile = profile.objects.get(user=request.user)
+    default_value = {
+        'first_name':request.user.first_name,
+        'last_name':request.user.last_name,
+        'phone':request.user.phone_number,
+        'email':request.user.email,
+        'address': user_profile.address,
+        'state':user_profile.state,
+        'country':user_profile.country,
+        'city':user_profile.city,
+        'pin_code':user_profile.pin_code,
+    }
+    form = checkoutForm(initial=default_value)
     cart_items = Cart.objects.filter(user=request.user).order_by('created_at')
     cart_count = cart_items.count()
     if cart_count <=0:
         return redirect('marketplace')
+    
     context = {
         'form': form,
         'cart_items': cart_items,
