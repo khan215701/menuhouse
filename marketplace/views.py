@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from vendor.models import Vendor, OpeningHour
 from menu.models import Category, FoodItem
@@ -136,7 +136,12 @@ def search(request):
 
 def checkout(request):
     form = checkoutForm()
+    cart_items = Cart.objects.filter(user=request.user).order_by('created_at')
+    cart_count = cart_items.count()
+    if cart_count <=0:
+        return redirect('marketplace')
     context = {
         'form': form,
+        'cart_items': cart_items,
     }
     return render(request, 'marketplace/checkout.html', context)
