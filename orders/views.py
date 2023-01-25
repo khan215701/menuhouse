@@ -4,6 +4,7 @@ from .models import Order
 from marketplace.context_processor import get_cart_amount
 from .forms import orderForm
 import simplejson as json    # first install simplejson then import
+from .utils import order_number_generator
 # Create your views here.
 def placeOrder(request):
     cart_item = Cart.objects.filter(user=request.user).order_by('created_at')
@@ -34,7 +35,8 @@ def placeOrder(request):
             order.tax_data = json.dumps(tax_data)
             order.total_tax = total_tax
             order.payment_method = request.POST['payment_method']
-            order.order_number = '123'
+            order.save()
+            order.order_number = order_number_generator(order.id)
             order.save()
             return redirect('placeOrder')
         else:
