@@ -1,5 +1,6 @@
 from django.urls import path, include
 from . import views 
+from django.views.generic import TemplateView
 
 urlpatterns = [
     path('', views.myAccount),
@@ -11,7 +12,7 @@ urlpatterns = [
     path('myAccount/', views.myAccount, name='myAccount'),
     path('activate/<uidb64>/<token>/', views.activate, name='activate'),
     path('vendorDashboard/', views.vendorDashboard, name='vendorDashboard'),
-    path('customerDashboard/', views.customerDashboard, name='customerDashboard'),
+    path('customerDashboard/', TemplateView.as_view(template_name='customerDashboard')),
     
     path('forgot_password/', views.forgotPassword, name='forgotPassword'),
     path('reset_password/<uidb64>/<token>', views.resetPasswordValidate, name='resetPassword'),
